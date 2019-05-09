@@ -1,6 +1,11 @@
 plugins {
     application
+    jacoco
     kotlin("jvm") version "1.3.30"
+}
+
+jacoco {
+    toolVersion = "0.8.2"
 }
 
 application {
@@ -17,4 +22,16 @@ dependencies {
 
 repositories {
     jcenter()
+}
+
+tasks.getByName<JacocoReport>("jacocoTestReport") {
+    dependsOn(tasks.named("test"))
+
+    reports {
+        xml.isEnabled = true
+
+        html.isEnabled = true
+
+        csv.isEnabled = false
+    }
 }
