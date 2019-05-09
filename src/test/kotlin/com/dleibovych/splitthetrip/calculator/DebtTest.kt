@@ -1,7 +1,7 @@
-package com.dleibovych.splitthetrip
+package com.dleibovych.splitthetrip.calculator
 
 import com.dleibovych.splitthetrip.calculator.Share
-import com.dleibovych.splitthetrip.calculator.User
+import com.dleibovych.splitthetrip.data.User
 import com.dleibovych.splitthetrip.calculator.calculateDebt
 import org.junit.Assert.*
 import org.junit.Test

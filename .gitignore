@@ -48,5 +48,6 @@ fabric.properties
 ### Gradle ###
 .gradle
 build/
+.env
 
 !gradle-wrapper.jar

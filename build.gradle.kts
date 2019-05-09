@@ -17,6 +17,7 @@ application {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("io.github.seik.kotlin-telegram-bot", "telegram", "0.3.7")
+    implementation("org.litote.kmongo", "kmongo", "3.10.1")
 
     testImplementation("junit", "junit", "4.12")
 }

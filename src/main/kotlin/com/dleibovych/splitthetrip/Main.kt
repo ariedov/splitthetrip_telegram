@@ -1,22 +1,43 @@
 package com.dleibovych.splitthetrip
 
-import com.sun.net.httpserver.HttpServer
-import java.io.PrintWriter
-import java.net.InetSocketAddress
+import com.dleibovych.splitthetrip.actions.StartAction
+import me.ivmg.telegram.bot
+import me.ivmg.telegram.dispatch
+import me.ivmg.telegram.dispatcher.command
 
 fun main() {
-    print("Started program")
 
-    HttpServer.create(InetSocketAddress(8080), 0).apply {
+    val bot = bot {
+        token = System.getenv("TELEGRAM_BOT_TOKEN") ?: ""
+        dispatch {
+            command("start") { bot, update ->
+                StartAction().perform(bot, update)
+            }
 
-        createContext("/") { http ->
-            http.responseHeaders.add("Content-type", "text/plain")
-            http.sendResponseHeaders(200, 0)
-            PrintWriter(http.responseBody).use { out ->
-                out.println("Hello ${http.remoteAddress.hostName}!")
+            command("register") { bot, update ->
+
+            }
+
+            command("addcurrency") { bot, update ->
+
+            }
+
+            command("add") { bot, update ->
+
+            }
+
+            command("info") { bot, update ->
+
+            }
+
+            command("transfer") { bot, update ->
+
+            }
+
+            command("end") { bot, update ->
+
             }
         }
-
-        start()
     }
+    bot.startPolling()
 }

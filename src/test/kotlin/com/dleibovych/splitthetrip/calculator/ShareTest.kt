@@ -1,6 +1,6 @@
-package com.dleibovych.splitthetrip
+package com.dleibovych.splitthetrip.calculator
 
-import com.dleibovych.splitthetrip.calculator.User
+import com.dleibovych.splitthetrip.data.User
 import com.dleibovych.splitthetrip.calculator.calculateShare
 import org.junit.Assert.*
 import org.junit.Test
@@ -13,8 +13,7 @@ class ShareTest {
             listOf(
                 User(1, "first", 1, 1000),
                 User(2, "second", 1, 0)
-            ),
-            2
+            )
         )
 
         assertEquals(2, share.size)
@@ -33,8 +32,7 @@ class ShareTest {
                 User(1, "first", 1, 900),
                 User(2, "second", 1, 0),
                 User(3, "third", 1, 0)
-            ),
-            3
+            )
         )
 
         assertEquals(3, share.size)
@@ -55,8 +53,7 @@ class ShareTest {
             listOf(
                 User(1, "first", 3, 10000),
                 User(2, "second", 4, 4000)
-            ),
-            7
+            )
         )
 
         assertEquals(2, share.size)
@@ -75,8 +72,7 @@ class ShareTest {
                 User(1, "first", 3, 1000),
                 User(2, "second", 7, 5000),
                 User(3, "third", 3, 7000)
-            ),
-            13
+            )
         )
 
         assertEquals(3, share.size)
