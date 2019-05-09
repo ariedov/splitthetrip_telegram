@@ -16,12 +16,14 @@ application {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation("io.github.seik.kotlin-telegram-bot", "telegram", "0.3.7")
 
     testImplementation("junit", "junit", "4.12")
 }
 
 repositories {
     jcenter()
+    maven { setUrl("https://jitpack.io") }
 }
 
 tasks.getByName<JacocoReport>("jacocoTestReport") {
