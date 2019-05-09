@@ -1,7 +1,6 @@
 package com.dleibovych.splitthetrip.calculator
 
-import com.dleibovych.splitthetrip.data.User
-import com.dleibovych.splitthetrip.calculator.calculateShare
+import com.dleibovych.splitthetrip.data.BotUser
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -11,8 +10,8 @@ class ShareTest {
     fun testCalculationOneToOne() {
         val share = calculateShare(
             listOf(
-                User(1, "first", 1, 1000),
-                User(2, "second", 1, 0)
+                BotUser(1, "first", 1, 1000),
+                BotUser(2, "second", 1, 0)
             )
         )
 
@@ -29,9 +28,9 @@ class ShareTest {
     fun testCalculationOneToOneWithThree() {
         val share = calculateShare(
             listOf(
-                User(1, "first", 1, 900),
-                User(2, "second", 1, 0),
-                User(3, "third", 1, 0)
+                BotUser(1, "first", 1, 900),
+                BotUser(2, "second", 1, 0),
+                BotUser(3, "third", 1, 0)
             )
         )
 
@@ -51,8 +50,8 @@ class ShareTest {
     fun testCalculateShareWithTwoPayers() {
         val share = calculateShare(
             listOf(
-                User(1, "first", 3, 10000),
-                User(2, "second", 4, 4000)
+                BotUser(1, "first", 3, 10000),
+                BotUser(2, "second", 4, 4000)
             )
         )
 
@@ -69,9 +68,9 @@ class ShareTest {
     fun testCalculateShareWithThreePayers() {
         val share = calculateShare(
             listOf(
-                User(1, "first", 3, 1000),
-                User(2, "second", 7, 5000),
-                User(3, "third", 3, 7000)
+                BotUser(1, "first", 3, 1000),
+                BotUser(2, "second", 7, 5000),
+                BotUser(3, "third", 3, 7000)
             )
         )
 

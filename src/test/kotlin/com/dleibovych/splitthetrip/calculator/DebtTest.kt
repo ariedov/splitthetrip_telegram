@@ -1,8 +1,6 @@
 package com.dleibovych.splitthetrip.calculator
 
-import com.dleibovych.splitthetrip.calculator.Share
-import com.dleibovych.splitthetrip.data.User
-import com.dleibovych.splitthetrip.calculator.calculateDebt
+import com.dleibovych.splitthetrip.data.BotUser
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -10,8 +8,8 @@ class DebtTest {
 
     @Test
     fun testOneToOne() {
-        val user1 = User(1, "first", 1, 1000)
-        val user2 = User(2, "second", 1, 0)
+        val user1 = BotUser(1, "first", 1, 1000)
+        val user2 = BotUser(2, "second", 1, 0)
         val shares = listOf(Share(user1, 500), Share(user2, -500))
 
         val debt1 = calculateDebt(user1, shares)
@@ -26,9 +24,9 @@ class DebtTest {
 
     @Test
     fun testTwoToOne() {
-        val user1 = User(1, "first", 1, 900)
-        val user2 = User(2, "second", 1, 0)
-        val user3 = User(3, "third", 1, 0)
+        val user1 = BotUser(1, "first", 1, 900)
+        val user2 = BotUser(2, "second", 1, 0)
+        val user3 = BotUser(3, "third", 1, 0)
         val shares = listOf(Share(user1, 600), Share(user2, -300), Share(user3, -300))
 
         val debt1 = calculateDebt(user1, shares)
@@ -48,9 +46,9 @@ class DebtTest {
 
     @Test
     fun testOneToTwo() {
-        val user1 = User(1, "first", 1, 450)
-        val user2 = User(2, "second", 1, 450)
-        val user3 = User(3, "third", 1, 0)
+        val user1 = BotUser(1, "first", 1, 450)
+        val user2 = BotUser(2, "second", 1, 450)
+        val user3 = BotUser(3, "third", 1, 0)
 
         val shares = listOf(Share(user1, 150), Share(user2, 150), Share(user3, -300))
 

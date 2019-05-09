@@ -1,12 +1,13 @@
 package com.dleibovych.splitthetrip.actions
 
+import com.dleibovych.splitthetrip.data.Storage
 import me.ivmg.telegram.Bot
 import me.ivmg.telegram.entities.Update
 
-class StartAction : Action {
+class StartAction(private val storage: Storage) : Action {
 
     override fun perform(bot: Bot, update: Update) {
-        // TODO : clear storage
+        storage.clear()
 
         bot.sendMessage(
             chatId = update.message!!.chat.id,

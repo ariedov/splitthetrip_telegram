@@ -1,10 +1,10 @@
 package com.dleibovych.splitthetrip.calculator
 
-import com.dleibovych.splitthetrip.data.User
+import com.dleibovych.splitthetrip.data.BotUser
 import kotlin.math.abs
 import kotlin.math.min
 
-fun calculateShare(users: List<User>): List<Share> {
+fun calculateShare(users: List<BotUser>): List<Share> {
     val totalBalance = users.fold(0L) { result, user -> result + user.balance }
     val totalPeople = users.fold(0L) { result, user -> result + user.responsibleFor }
     return users.map { user ->
@@ -13,7 +13,7 @@ fun calculateShare(users: List<User>): List<Share> {
     }
 }
 
-fun calculateDebt(user: User, shares: List<Share>): List<Share> {
+fun calculateDebt(user: BotUser, shares: List<Share>): List<Share> {
     val userShare = shares.find { it.user.id == user.id }
 
     // share is > 0, no debts
@@ -27,4 +27,4 @@ fun calculateDebt(user: User, shares: List<Share>): List<Share> {
         .map { Share(it.user, min(abs(userShare.share), it.share)) }
 }
 
-data class Share(val user: User, val share: Long)
+data class Share(val user: BotUser, val share: Long)
