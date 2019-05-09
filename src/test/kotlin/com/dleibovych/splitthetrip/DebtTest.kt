@@ -12,10 +12,7 @@ class DebtTest {
     fun testOneToOne() {
         val user1 = User(1, "first", 1, 1000)
         val user2 = User(2, "second", 1, 0)
-        val shares = listOf(
-            Share(user1, 500),
-            Share(user2, -500)
-        )
+        val shares = listOf(Share(user1, 500), Share(user2, -500))
 
         val debt1 = calculateDebt(user1, shares)
         val debt2 = calculateDebt(user2, shares)
@@ -25,5 +22,27 @@ class DebtTest {
         assertEquals(1, debt2.size)
         assertEquals(user1, debt2[0].user)
         assertEquals(500, debt2[0].share)
+    }
+
+    @Test
+    fun testTwoToOne() {
+        val user1 = User(1, "first", 1, 900)
+        val user2 = User(2, "second", 1, 0)
+        val user3 = User(3, "third", 1, 0)
+        val shares = listOf(Share(user1, 300), Share(user2, -300), Share(user3, -300))
+
+        val debt1 = calculateDebt(user1, shares)
+        val debt2 = calculateDebt(user2, shares)
+        val debt3 = calculateDebt(user3, shares)
+
+        assertEquals(0, debt1.size)
+
+        assertEquals(1, debt2.size)
+        assertEquals(user1, debt2[0].user)
+        assertEquals(300, debt2[0].share)
+
+        assertEquals(1, debt3.size)
+        assertEquals(user1, debt3[0].user)
+        assertEquals(300, debt3[0].share)
     }
 }
