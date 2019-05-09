@@ -17,6 +17,10 @@ interface Storage {
 
     fun addTransfer(transfer: Transfer)
 
+    fun getExpenses(): List<Expense>
+
+    fun getTransfers(): List<Transfer>
+
     fun clear()
 }
 
@@ -49,6 +53,16 @@ class MongoStorage(private val database: MongoDatabase) : Storage {
     override fun addTransfer(transfer: Transfer) {
         val collection = database.getCollection<Transfer>()
         collection.insertOne(transfer)
+    }
+
+    override fun getExpenses(): List<Expense> {
+        val collection = database.getCollection<Expense>()
+        return collection.find().toList()
+    }
+
+    override fun getTransfers(): List<Transfer> {
+        val collection = database.getCollection<Transfer>()
+        return collection.find().toList()
     }
 
     override fun clear() {
