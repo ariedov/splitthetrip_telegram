@@ -12,13 +12,13 @@ import me.ivmg.telegram.entities.User
 class RegisterAction : Action {
 
     override fun perform(bot: Bot, update: Update) {
-        val mentionedUser = update.message!!.entities?.find { it.user != null }?.user
+        val mentionedUser = update.message?.entities?.find { it.user != null }?.user
         val resultUser = mentionedUser ?: update.message?.from
 
         val responsibleFor = (update.message?.text ?: "").findFirstLong() ?: 1
 
         bot.sendMessage(
-            chatId = update.message!!.chat.id,
+            chatId = update.message?.chat?.id ?: 0,
             text = formatRegisterMessage(resultUser, responsibleFor),
             replyMarkup = if (resultUser != null) InlineKeyboardButton(
                 "Підтвердити!",

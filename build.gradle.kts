@@ -20,6 +20,7 @@ dependencies {
     implementation("org.litote.kmongo", "kmongo", "3.10.1")
 
     testImplementation("junit", "junit", "4.12")
+    testImplementation("com.nhaarman.mockitokotlin2", "mockito-kotlin", "2.1.0")
 }
 
 repositories {
