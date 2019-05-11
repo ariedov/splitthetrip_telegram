@@ -1,19 +1,24 @@
 package com.dleibovych.splitthetrip.calculator
 
 import com.dleibovych.splitthetrip.data.BotUser
+import com.dleibovych.splitthetrip.data.Currency
+import com.dleibovych.splitthetrip.data.Expense
 import org.junit.Assert.*
 import org.junit.Test
+import kotlin.math.exp
 
 class ShareTest {
 
     @Test
-    fun testCalculationOneToOne() {
-        val share = calculateShare(
-            listOf(
-                BotUser(1, "first", 1, 1000),
-                BotUser(2, "second", 1, 0)
-            )
+    fun testCalculationOneToOneSingleCurrency() {
+        val users = listOf(
+            BotUser(1, "first", 1),
+            BotUser(2, "second", 1)
         )
+        val currencies = listOf(Currency("default"))
+        val expenses = listOf(Expense(users[0], 1000, currencies[0]))
+
+        val share = calculateShare(users, currencies, expenses, emptyList())
 
         assertEquals(2, share.size)
 
@@ -26,13 +31,15 @@ class ShareTest {
 
     @Test
     fun testCalculationOneToOneWithThree() {
-        val share = calculateShare(
-            listOf(
-                BotUser(1, "first", 1, 900),
-                BotUser(2, "second", 1, 0),
-                BotUser(3, "third", 1, 0)
-            )
+        val users = listOf(
+            BotUser(1, "first", 1),
+            BotUser(2, "second", 1),
+            BotUser(3, "third", 1)
         )
+        val currencies = listOf(Currency("default"))
+        val expenses = listOf(Expense(users[0], 900, currencies[0]))
+
+        val share = calculateShare(users, currencies, expenses, emptyList())
 
         assertEquals(3, share.size)
 
@@ -48,12 +55,14 @@ class ShareTest {
 
     @Test
     fun testCalculateShareWithTwoPayers() {
-        val share = calculateShare(
-            listOf(
-                BotUser(1, "first", 3, 10000),
-                BotUser(2, "second", 4, 4000)
-            )
+        val users = listOf(
+            BotUser(1, "first", 3),
+            BotUser(2, "second", 4)
         )
+        val currencies = listOf(Currency("default"))
+        val expenses = listOf(Expense(users[0], 10000, currencies[0]), Expense(users[1], 4000, currencies[0]))
+
+        val share = calculateShare(users, currencies, expenses, emptyList())
 
         assertEquals(2, share.size)
 
@@ -66,13 +75,19 @@ class ShareTest {
 
     @Test
     fun testCalculateShareWithThreePayers() {
-        val share = calculateShare(
-            listOf(
-                BotUser(1, "first", 3, 1000),
-                BotUser(2, "second", 7, 5000),
-                BotUser(3, "third", 3, 7000)
-            )
+        val users = listOf(
+            BotUser(1, "first", 3),
+            BotUser(2, "second", 7),
+            BotUser(3, "third", 3)
         )
+        val currencies = listOf(Currency("default"))
+        val expenses = listOf(
+            Expense(users[0], 1000, currencies[0]),
+            Expense(users[1], 5000, currencies[0]),
+            Expense(users[2], 7000, currencies[0])
+        )
+
+        val share = calculateShare(users, currencies, expenses, emptyList())
 
         assertEquals(3, share.size)
 

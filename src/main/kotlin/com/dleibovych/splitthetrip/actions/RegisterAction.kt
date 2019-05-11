@@ -59,8 +59,7 @@ class ConfirmRegisterAction(private val storage: Storage) : Action {
             BotUser(
                 id = userId,
                 name = update.message?.from?.firstName ?: "",
-                responsibleFor = responsibleFor,
-                balance = 0
+                responsibleFor = responsibleFor
             )
         )
 

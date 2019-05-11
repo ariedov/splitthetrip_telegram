@@ -8,7 +8,7 @@ import org.junit.Test
 
 class RegisterActionTest {
 
-    lateinit var registerAction: RegisterAction
+    private lateinit var registerAction: RegisterAction
 
     @Before
     fun setUp() {
