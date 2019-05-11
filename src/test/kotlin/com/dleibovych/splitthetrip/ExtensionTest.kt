@@ -1,3 +1,5 @@
+package com.dleibovych.splitthetrip
+
 import com.dleibovych.splitthetrip.findFirstLong
 import com.dleibovych.splitthetrip.findSecondLong
 import org.junit.Assert.assertEquals
