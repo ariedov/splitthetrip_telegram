@@ -6,10 +6,10 @@ import me.ivmg.telegram.entities.Update
 
 class StartAction(private val storage: Storage) : Action {
 
-    override fun perform(bot: Bot, update: Update) {
+    override fun perform(messenger: TelegramMessenger, update: Update) {
         storage.clear()
 
-        bot.sendMessage(
+        messenger.sendMessage(
             chatId = update.message!!.chat.id,
             text = formatInitialMessage())
     }
