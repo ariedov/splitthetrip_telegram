@@ -7,7 +7,6 @@ import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import me.ivmg.telegram.Bot
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
