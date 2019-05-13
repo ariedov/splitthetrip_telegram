@@ -107,7 +107,7 @@ fun createTelegramMessage(
     )
 }
 
-fun createChat(
+fun createTelegramChat(
     id: Long,
     type: String = "",
     title: String? = null,
@@ -138,4 +138,15 @@ fun createChat(
         stickerSetName,
         canSetStickerSet
     )
+}
+
+fun createTelegramUser(
+    id: Long,
+    isBot: Boolean,
+    firstName: String,
+    lastName: String? = null,
+    username: String? = null,
+    languageCode: String? = null
+): User {
+    return User(id, isBot, firstName, lastName, username, languageCode)
 }
