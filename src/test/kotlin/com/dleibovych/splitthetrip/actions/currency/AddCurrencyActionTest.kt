@@ -1,12 +1,13 @@
-package com.dleibovych.splitthetrip.actions
+package com.dleibovych.splitthetrip.actions.currency
 
+import com.dleibovych.splitthetrip.actions.AddCurrencyAction
+import com.dleibovych.splitthetrip.actions.TelegramMessenger
 import com.dleibovych.splitthetrip.createTelegramChat
 import com.dleibovych.splitthetrip.createTelegramMessage
 import com.dleibovych.splitthetrip.createTelegramUpdate
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import me.ivmg.telegram.entities.InlineKeyboardButton
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
@@ -48,10 +49,5 @@ class AddCurrencyActionTest {
                 callbackData = "/confirmcurrency usd"
             )
         )
-    }
-
-    @Test
-    fun testSuccessfullySaveCurrency() {
-        Assert.assertTrue(false)
     }
 }

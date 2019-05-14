@@ -1,5 +1,7 @@
-package com.dleibovych.splitthetrip.actions
+package com.dleibovych.splitthetrip.actions.register
 
+import com.dleibovych.splitthetrip.actions.RegisterAction
+import com.dleibovych.splitthetrip.actions.TelegramMessenger
 import com.dleibovych.splitthetrip.createTelegramChat
 import com.dleibovych.splitthetrip.createTelegramMessage
 import com.dleibovych.splitthetrip.createTelegramUpdate

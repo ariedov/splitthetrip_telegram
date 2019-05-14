@@ -1,12 +1,13 @@
-package com.dleibovych.splitthetrip.actions
+package com.dleibovych.splitthetrip.actions.register
 
 import com.dleibovych.splitthetrip.*
+import com.dleibovych.splitthetrip.actions.ConfirmRegisterAction
+import com.dleibovych.splitthetrip.actions.TelegramMessenger
 import com.dleibovych.splitthetrip.data.Storage
-import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
-import me.ivmg.telegram.Bot
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
@@ -41,6 +42,11 @@ class ConfirmRegisterActionTest {
             text = eq("Не вдалося зберегти платника."),
             replyMarkup = eq(null)
         )
+    }
+
+    @Test
+    fun testExistingUser() {
+        Assert.assertTrue(false)
     }
 
     @Test

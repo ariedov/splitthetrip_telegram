@@ -1,5 +1,6 @@
 package com.dleibovych.splitthetrip.actions
 
+import com.dleibovych.splitthetrip.data.Currency
 import com.dleibovych.splitthetrip.data.Storage
 import com.dleibovych.splitthetrip.findFirstNonActionText
 import me.ivmg.telegram.entities.InlineKeyboardButton
@@ -13,9 +14,7 @@ class AddCurrencyAction : Action {
 
         val chatId = update.message!!.chat.id
         if (currencyName == null) {
-            messenger.sendMessage(
-                chatId = chatId,
-                text = "Вкажіть назву валюти у форматі: $name _назва_")
+            sendPromptCurrencyMessage(messenger, chatId)
             return
         }
 
@@ -37,10 +36,29 @@ class AddCurrencyAction : Action {
 class ConfirmNewCurrencyAction(private val storage: Storage) : Action {
 
     override fun perform(messenger: TelegramMessenger, update: Update) {
+        val message = update.message!!.text
+        val currencyName = message?.findFirstNonActionText()
 
+        val chatId = update.message!!.chat.id
+
+        if (currencyName == null) {
+            sendPromptCurrencyMessage(messenger, chatId)
+            return
+        }
+
+        storage.addCurrency(Currency(currencyName))
+        messenger.sendMessage(
+            chatId = chatId,
+            text = "Успіщно збережено валюту $currencyName")
     }
 
     companion object {
         const val name = "/confirmcurrency"
     }
+}
+
+private fun sendPromptCurrencyMessage(messenger: TelegramMessenger, chatId: Long) {
+    messenger.sendMessage(
+        chatId = chatId,
+        text = "Вкажіть назву валюти у форматі: /addcurrency _назва_")
 }
