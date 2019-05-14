@@ -3,7 +3,7 @@ package com.dleibovych.splitthetrip.data
 import com.mongodb.client.MongoDatabase
 import org.litote.kmongo.getCollection
 
-class Storage(val database: MongoDatabase) {
+class Storage(private val database: MongoDatabase) {
 
     fun saveUser(user: BotUser) {
         val collection = database.getCollection<BotUser>()

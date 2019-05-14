@@ -3,10 +3,9 @@ package com.dleibovych.splitthetrip.actions.register
 import com.dleibovych.splitthetrip.*
 import com.dleibovych.splitthetrip.actions.ConfirmRegisterAction
 import com.dleibovych.splitthetrip.actions.TelegramMessenger
+import com.dleibovych.splitthetrip.data.BotUser
 import com.dleibovych.splitthetrip.data.Storage
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.*
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -46,7 +45,17 @@ class ConfirmRegisterActionTest {
 
     @Test
     fun testExistingUser() {
-        Assert.assertTrue(false)
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "name", 4)))
+        val user = createTelegramUser(id = 1, isBot = false, firstName = "name")
+        val messageText =
+            "/confirmregister 1-userid 4-responsiblefor" // it should get the numbers, the text doesn't really matter
+        val message = createTelegramMessage(1, chat = createTelegramChat(1), from = user, text = messageText)
+        val update = createTelegramUpdate(1, message = message)
+
+        action.perform(messenger, update)
+
+        verify(storage, never()).saveUser(any())
+        verify(messenger).sendMessage(1, "Платник вже збережений.", replyMarkup = null)
     }
 
     @Test
@@ -62,6 +71,7 @@ class ConfirmRegisterActionTest {
 
         action.perform(messenger, createTelegramUpdate(1, message = message))
 
+        verify(storage).saveUser(BotUser(3, "name", 3))
         verify(messenger).sendMessage(
             chatId = eq(1),
             text = eq("Успішно зберегли name як платника!"),

@@ -7,6 +7,7 @@ import com.dleibovych.splitthetrip.findSecondLong
 import me.ivmg.telegram.entities.InlineKeyboardButton
 import me.ivmg.telegram.entities.Update
 import me.ivmg.telegram.entities.User
+import org.litote.kmongo.text
 
 class RegisterAction : Action {
 
@@ -43,25 +44,31 @@ class ConfirmRegisterAction(private val storage: Storage) : Action {
         val userId = update.message?.text?.findFirstLong()
         val responsibleFor = update.message?.text?.findSecondLong()
 
+        val chatId = update.message!!.chat.id
         if (userId == null || responsibleFor == null || userId != update.message?.from?.id) {
             messenger.sendMessage(
-                chatId = update.message!!.chat.id,
+                chatId = chatId,
                 text = "Не вдалося зберегти платника."
             )
 
             return
         }
 
-        storage.saveUser(
-            BotUser(
-                id = userId,
-                name = update.message?.from?.firstName ?: "",
-                responsibleFor = responsibleFor
-            )
+        val newUser = BotUser(
+            id = userId,
+            name = update.message?.from?.firstName ?: "",
+            responsibleFor = responsibleFor
         )
+        val storedUsers = storage.readUsers()
+        if (storedUsers.contains(newUser)) {
+            messenger.sendMessage(chatId, text = "Платник вже збережений.")
+            return
+        }
+
+        storage.saveUser(newUser)
 
         messenger.sendMessage(
-            chatId = update.message!!.chat.id,
+            chatId = chatId,
             text = "Успішно зберегли ${update.message?.from?.firstName} як платника!"
         )
     }
