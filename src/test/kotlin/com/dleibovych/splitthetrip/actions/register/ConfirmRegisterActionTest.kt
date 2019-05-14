@@ -6,7 +6,6 @@ import com.dleibovych.splitthetrip.actions.TelegramMessenger
 import com.dleibovych.splitthetrip.data.BotUser
 import com.dleibovych.splitthetrip.data.Storage
 import com.nhaarman.mockitokotlin2.*
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 

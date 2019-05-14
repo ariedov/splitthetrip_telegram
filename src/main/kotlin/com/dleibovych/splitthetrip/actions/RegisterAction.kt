@@ -7,7 +7,6 @@ import com.dleibovych.splitthetrip.findSecondLong
 import me.ivmg.telegram.entities.InlineKeyboardButton
 import me.ivmg.telegram.entities.Update
 import me.ivmg.telegram.entities.User
-import org.litote.kmongo.text
 
 class RegisterAction : Action {
 
