@@ -1,6 +1,5 @@
 package com.dleibovych.splitthetrip.actions.expense
 
-import com.dleibovych.splitthetrip.actions.AddExpenseAction
 import com.dleibovych.splitthetrip.actions.TelegramMessenger
 import com.dleibovych.splitthetrip.createTelegramChat
 import com.dleibovych.splitthetrip.createTelegramMessage
