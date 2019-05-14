@@ -75,4 +75,16 @@ class ExtensionTest {
 
         assertNull(firstText)
     }
+
+    @Test
+    fun testMoneyToLong() {
+        val result = 15.0.convertToMoneyLong()
+        assertEquals(1500, result)
+    }
+
+    @Test
+    fun testPreciseMoneyToLong() {
+        val result = 15.001.convertToMoneyLong()
+        assertEquals(1500, result)
+    }
 }

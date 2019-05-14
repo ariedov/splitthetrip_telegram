@@ -7,10 +7,10 @@ data class Expense(
     val user: BotUser,
     val amount: Long,
     val currency: Currency,
-    val description: String? = null,
-    val date: Date = Date.from(
-        Instant.now()
-    )
+    val description: String? = null
+//    val date: Date = Date.from(
+//        Instant.now()
+//    )
 )
 
 data class Transfer(

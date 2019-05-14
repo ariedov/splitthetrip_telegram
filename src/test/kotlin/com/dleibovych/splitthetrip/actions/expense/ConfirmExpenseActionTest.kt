@@ -5,9 +5,13 @@ import com.dleibovych.splitthetrip.createTelegramChat
 import com.dleibovych.splitthetrip.createTelegramMessage
 import com.dleibovych.splitthetrip.createTelegramUpdate
 import com.dleibovych.splitthetrip.createTelegramUser
+import com.dleibovych.splitthetrip.data.BotUser
+import com.dleibovych.splitthetrip.data.Currency
+import com.dleibovych.splitthetrip.data.Expense
 import com.dleibovych.splitthetrip.data.Storage
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Before
 import org.junit.Test
 
@@ -37,11 +41,13 @@ class ConfirmExpenseActionTest {
 
         action.perform(messenger, update)
 
-        verify(messenger).sendMessage(1, text = "Підтвердити операцію має той самий користувач що її почав.")
+        verify(messenger).sendMessage(1, text = "Підтвердити операцію має той хто її почав.")
     }
 
     @Test
-    fun testSuccessfullySaveExpense() {
+    fun testNoSuchPayer() {
+        whenever(storage.readUsers()).thenReturn(emptyList())
+
         val message = createTelegramMessage(
             1,
             text = "/confirmadd 1 15.77 usd",
@@ -52,6 +58,44 @@ class ConfirmExpenseActionTest {
 
         action.perform(messenger, update)
 
+        verify(messenger).sendMessage(1, text = "name не зареєстровано як платника. Ви можете зареєструватись як платник виконавши /register")
+    }
+
+    @Test
+    fun testNoSuchCurrency() {
+        whenever(storage.getCurrencies()).thenReturn(emptyList())
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "name", 3)))
+
+        val message = createTelegramMessage(
+            1,
+            text = "/confirmadd 1 15.77 usd",
+            chat = createTelegramChat(1),
+            from = createTelegramUser(1, isBot = false, firstName = "name")
+        )
+        val update = createTelegramUpdate(1, message = message)
+
+        action.perform(messenger, update)
+
+        verify(messenger).sendMessage(1, text = "Валюта usd не добавлена. Ви можете добавити її через /addcurrency")
+    }
+
+    @Test
+    fun testSuccessfullySaveExpense() {
+        val user = BotUser(1, "name", 4)
+        whenever(storage.getCurrencies()).thenReturn(listOf(Currency("usd")))
+        whenever(storage.readUsers()).thenReturn(listOf(user))
+
+        val message = createTelegramMessage(
+            1,
+            text = "/confirmadd 1 15.77 usd",
+            chat = createTelegramChat(1),
+            from = createTelegramUser(1, isBot = false, firstName = "name")
+        )
+        val update = createTelegramUpdate(1, message = message)
+
+        action.perform(messenger, update)
+
+        verify(storage).addExpense(Expense(user, 1577, Currency("usd")))
         verify(messenger).sendMessage(1, text = "Операцію збережено")
     }
 }

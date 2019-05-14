@@ -1,5 +1,7 @@
 package com.dleibovych.splitthetrip
 
+import java.text.DecimalFormat
+
 val numberRegex = "(\\d+)".toRegex()
 
 fun String.findFirstLong(): Long? {
@@ -33,4 +35,8 @@ fun String.findSecondDouble(): Double? {
 fun String.findLastNonActionText(): String? {
     val textRegex = "/.+ (.+)".toRegex()
     return textRegex.find(this)?.groupValues?.last()
+}
+
+fun Double.convertToMoneyLong(): Long {
+    return String.format("%.2f", this).replace(".", "").toLong()
 }
