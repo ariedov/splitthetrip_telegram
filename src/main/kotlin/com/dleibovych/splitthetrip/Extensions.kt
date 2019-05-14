@@ -15,3 +15,8 @@ fun String.findSecondLong() : Long? {
         null
     }
 }
+
+fun String.findFirstNonActionText(): String? {
+    val textRegex = "/\\. (\\.)".toRegex()
+    return textRegex.find(this)?.groupValues?.get(1)
+}
