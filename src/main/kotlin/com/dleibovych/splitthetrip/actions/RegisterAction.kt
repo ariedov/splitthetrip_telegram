@@ -11,17 +11,15 @@ import me.ivmg.telegram.entities.User
 class RegisterAction : Action {
 
     override fun perform(messenger: TelegramMessenger, update: Update) {
-        val mentionedUser = update.message?.entities?.find { it.user != null }?.user
-        val resultUser = mentionedUser ?: update.message?.from
-
+        val user = update.message?.from
         val responsibleFor = (update.message?.text ?: "").findFirstLong() ?: 1
 
         messenger.sendMessage(
             chatId = update.message?.chat?.id ?: 0,
-            text = formatRegisterMessage(resultUser, responsibleFor),
-            replyMarkup = if (resultUser != null) InlineKeyboardButton(
+            text = formatRegisterMessage(user, responsibleFor),
+            replyMarkup = if (user != null) InlineKeyboardButton(
                 "Підтвердити!",
-                callbackData = "/confirmregister ${resultUser.id} $responsibleFor"
+                callbackData = "/confirmregister ${user.id} $responsibleFor"
             ) else null
         )
     }

@@ -40,13 +40,19 @@ class ConfirmNewCurrencyAction(private val storage: Storage) : Action {
         val currencyName = message?.findFirstNonActionText()
 
         val chatId = update.message!!.chat.id
-
         if (currencyName == null) {
             sendPromptCurrencyMessage(messenger, chatId)
             return
         }
 
-        storage.addCurrency(Currency(currencyName))
+        val newCurrency = Currency(currencyName)
+        val storedCurrencies = storage.getCurrencies()
+        if (storedCurrencies.contains(newCurrency)) {
+            messenger.sendMessage(chatId, "Валюта $currencyName вже збережена.")
+            return
+        }
+
+        storage.addCurrency(newCurrency)
         messenger.sendMessage(
             chatId = chatId,
             text = "Успіщно збережено валюту $currencyName")

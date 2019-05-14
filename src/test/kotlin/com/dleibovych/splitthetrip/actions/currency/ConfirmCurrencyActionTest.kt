@@ -7,9 +7,7 @@ import com.dleibovych.splitthetrip.createTelegramMessage
 import com.dleibovych.splitthetrip.createTelegramUpdate
 import com.dleibovych.splitthetrip.data.Currency
 import com.dleibovych.splitthetrip.data.Storage
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import org.junit.Assert
+import com.nhaarman.mockitokotlin2.*
 import org.junit.Before
 import org.junit.Test
 
@@ -40,7 +38,14 @@ class ConfirmCurrencyActionTest {
 
     @Test
     fun testExistingCurrency() {
-        Assert.assertTrue(false)
+        whenever(storage.getCurrencies()).thenReturn(listOf(Currency("usd")))
+        val message = createTelegramMessage(1, chat = createTelegramChat(1), text = "/confirmcurrency usd")
+        val update = createTelegramUpdate(1, message = message)
+
+        action.perform(messenger, update)
+
+        verify(storage, never()).addCurrency(any())
+        verify(messenger).sendMessage(1, "Валюта usd вже збережена.", replyMarkup = null)
     }
 
     @Test
