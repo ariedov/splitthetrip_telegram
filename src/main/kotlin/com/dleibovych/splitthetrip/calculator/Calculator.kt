@@ -29,7 +29,7 @@ fun calculateDebt(user: BotUser, currencies: List<Currency>, shares: List<Share>
     val userShare = shares.find { it.user.id == user.id }
 
     // share is > 0, no debts
-    if (userShare!!.share > 0) {
+    if (userShare == null || userShare.share > 0) {
         return listOf()
     }
 
