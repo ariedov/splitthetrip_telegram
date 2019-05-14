@@ -30,7 +30,7 @@ fun String.findSecondDouble(): Double? {
     }
 }
 
-fun String.findFirstNonActionText(): String? {
+fun String.findLastNonActionText(): String? {
     val textRegex = "/.+ (.+)".toRegex()
-    return textRegex.find(this)?.groupValues?.get(1)
+    return textRegex.find(this)?.groupValues?.last()
 }

@@ -14,7 +14,6 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import me.ivmg.telegram.entities.InlineKeyboardButton
 import me.ivmg.telegram.entities.InlineKeyboardMarkup
-import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
@@ -33,6 +32,7 @@ class AddExpenseActionTest {
 
     @Test
     fun testRequestExpenseNoCurrency() {
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "name", 4)))
         whenever(storage.getCurrencies()).thenReturn(emptyList())
 
         val user = createTelegramUser(1, isBot = false, firstName = "name")
@@ -50,6 +50,7 @@ class AddExpenseActionTest {
 
     @Test
     fun testRequestExpenseOneCurrency() {
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "name", responsibleFor = 1)))
         whenever(storage.getCurrencies()).thenReturn(listOf(Currency("default")))
 
         val user = createTelegramUser(1, isBot = false, firstName = "name")
@@ -67,7 +68,27 @@ class AddExpenseActionTest {
     }
 
     @Test
+    fun testRequestExpenseOneCurrencyAndUserId() {
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "name", responsibleFor = 1)))
+        whenever(storage.getCurrencies()).thenReturn(listOf(Currency("default")))
+
+        val user = createTelegramUser(1, isBot = false, firstName = "name")
+        val message = createTelegramMessage(1, chat = createTelegramChat(1), text = "/add 1 145.15 default", from = user)
+        val update = createTelegramUpdate(1, message = message)
+
+        action.perform(messenger, update)
+
+        verify(messenger).sendMessage(
+            1, text = "Підтвердити платіж 145.15 default?", replyMarkup = InlineKeyboardButton(
+                text = "Підтвердити!",
+                callbackData = "/confirmadd 1 145.15 default"
+            )
+        )
+    }
+
+    @Test
     fun testRequestExpenseNoSuchCurrency() {
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "name", 4)))
         whenever(storage.getCurrencies()).thenReturn(listOf(Currency("default")))
 
         val user = createTelegramUser(1, isBot = false, firstName = "name")
@@ -84,7 +105,27 @@ class AddExpenseActionTest {
     }
 
     @Test
+    fun testRequestExpenseAvailableCurrency() {
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "name", 4)))
+        whenever(storage.getCurrencies()).thenReturn(listOf(Currency("default")))
+
+        val user = createTelegramUser(1, isBot = false, firstName = "name")
+        val message = createTelegramMessage(1, chat = createTelegramChat(1), text = "/add 145.15 default", from = user)
+        val update = createTelegramUpdate(1, message = message)
+
+        action.perform(messenger, update)
+
+        verify(messenger).sendMessage(
+            1, text = "Підтвердити платіж 145.15 default?", replyMarkup = InlineKeyboardButton(
+                text = "Підтвердити!",
+                callbackData = "/confirmadd 1 145.15 default"
+            )
+        )
+    }
+
+    @Test
     fun testRequestExpenseMultipleCurrencies() {
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "name", responsibleFor = 1)))
         whenever(storage.getCurrencies()).thenReturn(listOf(Currency("default"), Currency("usd")))
 
         val user = createTelegramUser(1, isBot = false, firstName = "name")
@@ -99,11 +140,11 @@ class AddExpenseActionTest {
                     listOf(
                         InlineKeyboardButton(
                             text = "default",
-                            callbackData = "/add 145.15 default"
+                            callbackData = "/add 1 145.15 default"
                         ),
                         InlineKeyboardButton(
                             text = "usd",
-                            callbackData = "/add 145.15 usd"
+                            callbackData = "/add 1 145.15 usd"
                         )
                     )
                 )
@@ -112,8 +153,38 @@ class AddExpenseActionTest {
     }
 
     @Test
-    fun testNoSuchUserRegistered() {
+    fun testRequestExpenseUserIdAndMultipleCurrencies() {
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "name", responsibleFor = 1)))
+        whenever(storage.getCurrencies()).thenReturn(listOf(Currency("default"), Currency("usd")))
+
+        val user = createTelegramUser(1, isBot = false, firstName = "name")
+        val message = createTelegramMessage(1, chat = createTelegramChat(1), text = "/add 1 145.15", from = user)
+        val update = createTelegramUpdate(1, message = message)
+
+        action.perform(messenger, update)
+
+        verify(messenger).sendMessage(
+            1, text = "Оберіть валюту яку хочете викорстати.", replyMarkup = InlineKeyboardMarkup(
+                inlineKeyboard = listOf(
+                    listOf(
+                        InlineKeyboardButton(
+                            text = "default",
+                            callbackData = "/add 1 145.15 default"
+                        ),
+                        InlineKeyboardButton(
+                            text = "usd",
+                            callbackData = "/add 1 145.15 usd"
+                        )
+                    )
+                )
+            )
+        )
+    }
+
+    @Test
+    fun testUserIdMismatch() {
         whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "name", 4)))
+        whenever(storage.getCurrencies()).thenReturn(listOf(Currency("default")))
 
         val user = createTelegramUser(1, isBot = false, firstName = "name")
         val message = createTelegramMessage(1, chat = createTelegramChat(1), text = "/add 2 145.15", from = user)
@@ -121,8 +192,22 @@ class AddExpenseActionTest {
 
         action.perform(messenger, update)
 
-        verify(messenger).sendMessage(1, text = "name не зареєстровано як платника. Можете зареєструвати через /register")
+        verify(messenger).sendMessage(1, text = "Підтвердити операцію має той самий користувач який її починав.")
+    }
 
-        Assert.assertTrue(false)
+    @Test
+    fun testNoSuchUserRegistered() {
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "name", 4)))
+
+        val user = createTelegramUser(2, isBot = false, firstName = "name")
+        val message = createTelegramMessage(1, chat = createTelegramChat(1), text = "/add 2 145.15", from = user)
+        val update = createTelegramUpdate(1, message = message)
+
+        action.perform(messenger, update)
+
+        verify(messenger).sendMessage(
+            1,
+            text = "name не зареєстровано як платника. Можете зареєструвати через /register"
+        )
     }
 }

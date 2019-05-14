@@ -63,15 +63,15 @@ class ExtensionTest {
     }
 
     @Test
-    fun testFindFirstText() {
-        val firstText = "/action text".findFirstNonActionText()
+    fun testFindLastText() {
+        val firstText = "/action text".findLastNonActionText()
 
         assertEquals("text", firstText)
     }
 
     @Test
-    fun testNoFirstText() {
-        val firstText = "/action".findFirstNonActionText()
+    fun testNoLastText() {
+        val firstText = "/action".findLastNonActionText()
 
         assertNull(firstText)
     }
