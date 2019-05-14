@@ -5,6 +5,7 @@ import com.dleibovych.splitthetrip.createTelegramMessage
 import com.dleibovych.splitthetrip.createTelegramUpdate
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import me.ivmg.telegram.entities.InlineKeyboardButton
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -12,12 +13,12 @@ import org.junit.Test
 class AddCurrencyActionTest {
 
     private lateinit var messenger: TelegramMessenger
-    private lateinit var action: AddCurrencyAction
+    private lateinit var initiateAction: AddCurrencyAction
 
     @Before
     fun setUp() {
         messenger = mock()
-        action = AddCurrencyAction()
+        initiateAction = AddCurrencyAction()
     }
 
     @Test
@@ -25,14 +26,28 @@ class AddCurrencyActionTest {
         val message = createTelegramMessage(1, createTelegramChat(1), text = "/addcurrency")
         val update = createTelegramUpdate(1, message = message)
 
-        action.perform(messenger, update)
+        initiateAction.perform(messenger, update)
 
-        verify(messenger).sendMessage(1, text = "Вкажіть назву валюти у форматі: ${AddCurrencyAction.name} _назва_", replyMarkup = null)
+        verify(messenger).sendMessage(
+            1,
+            text = "Вкажіть назву валюти у форматі: /addcurrency _назва_",
+            replyMarkup = null
+        )
     }
 
     @Test
     fun testInitiateCurrencySave() {
-        Assert.assertTrue(false)
+        val message = createTelegramMessage(1, createTelegramChat(1), text = "/addcurrency usd")
+        val update = createTelegramUpdate(1, message = message)
+
+        initiateAction.perform(messenger, update)
+
+        verify(messenger).sendMessage(
+            1, "Додати нову валюту *usd*?", replyMarkup = InlineKeyboardButton(
+                text = "Так",
+                callbackData = "/confirmcurrency usd"
+            )
+        )
     }
 
     @Test

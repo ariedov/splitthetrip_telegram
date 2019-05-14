@@ -1,9 +1,6 @@
 package com.dleibovych.splitthetrip
 
-import com.dleibovych.splitthetrip.actions.ConfirmRegisterAction
-import com.dleibovych.splitthetrip.actions.RegisterAction
-import com.dleibovych.splitthetrip.actions.StartAction
-import com.dleibovych.splitthetrip.actions.TelegramMessenger
+import com.dleibovych.splitthetrip.actions.*
 import com.dleibovych.splitthetrip.data.Storage
 import me.ivmg.telegram.bot
 import me.ivmg.telegram.dispatch
@@ -34,7 +31,11 @@ fun main() {
             }
 
             command("addcurrency") { bot, update ->
+                AddCurrencyAction().perform(messenger, update)
+            }
 
+            command("confirmcurrency") { bot, update ->
+                ConfirmNewCurrencyAction(storage).perform(messenger, update)
             }
 
             command("add") { bot, update ->

@@ -35,4 +35,11 @@ class ExtensionTest {
 
         assertNull(secondInt)
     }
+
+    @Test
+    fun testFindFirstText() {
+        val firstText = "/action text".findFirstNonActionText()
+
+        assertEquals("text", firstText)
+    }
 }
