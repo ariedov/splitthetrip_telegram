@@ -1,7 +1,5 @@
 package com.dleibovych.splitthetrip
 
-import com.dleibovych.splitthetrip.findFirstLong
-import com.dleibovych.splitthetrip.findSecondLong
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -37,9 +35,44 @@ class ExtensionTest {
     }
 
     @Test
+    fun testFindFirstDouble() {
+        val firstDouble = "11.4".findFirstDouble()
+
+        assertEquals(11.4, firstDouble)
+    }
+
+    @Test
+    fun testFindFirstDoubleNoDecimal() {
+        val firstDouble = "15".findFirstDouble()
+
+        assertEquals(15.0, firstDouble)
+    }
+
+    @Test
+    fun testFindSecondDouble() {
+        val secondDouble = "1 11.4".findSecondDouble()
+
+        assertEquals(11.4, secondDouble)
+    }
+
+    @Test
+    fun testNoFirstDouble() {
+        val firstDouble = "only text".findFirstDouble()
+
+        assertNull(firstDouble)
+    }
+
+    @Test
     fun testFindFirstText() {
         val firstText = "/action text".findFirstNonActionText()
 
         assertEquals("text", firstText)
+    }
+
+    @Test
+    fun testNoFirstText() {
+        val firstText = "/action".findFirstNonActionText()
+
+        assertNull(firstText)
     }
 }

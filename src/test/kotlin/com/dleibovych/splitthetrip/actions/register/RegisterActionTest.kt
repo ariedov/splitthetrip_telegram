@@ -32,9 +32,9 @@ class RegisterActionTest {
         registerAction.perform(messenger, createTelegramUpdate(1, message = message))
 
         verify(messenger).sendMessage(
-            chatId = eq(1),
-            text = any(),
-            replyMarkup = eq(null)
+            chatId = 1,
+            text = "Сталася помилка, не зрозуміло кого зберігати.",
+            replyMarkup = null
         )
     }
 
@@ -45,13 +45,12 @@ class RegisterActionTest {
         registerAction.perform(messenger, createTelegramUpdate(1, message = message))
 
         verify(messenger).sendMessage(
-            chatId = eq(1),
-            text = any(),
-            replyMarkup = eq(
+            chatId = 1,
+            text = "name готовий платити за 4.",
+            replyMarkup =
                 InlineKeyboardButton(
                     "Підтвердити!",
                     callbackData = "/confirmregister 1 4"
-                )
             )
         )
     }
