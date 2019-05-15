@@ -12,7 +12,7 @@ import org.litote.kmongo.KMongo
 
 fun main() {
 
-    val client = KMongo.createClient("mongodb://mongo:27017")
+    val client = KMongo.createClient("mongo", 27017)
     val database = client.getDatabase("splitthetrip")
 
     val storage = Storage(database)
