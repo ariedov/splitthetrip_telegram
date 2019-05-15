@@ -15,9 +15,9 @@ application {
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
-    implementation("io.github.seik.kotlin-telegram-bot", "telegram", "0.3.7")
-    implementation("org.litote.kmongo", "kmongo", "3.10.1")
+    compile(kotlin("stdlib"))
+    compile("io.github.seik.kotlin-telegram-bot", "telegram", "0.3.7")
+    compile("org.litote.kmongo", "kmongo", "3.10.1")
 
     testImplementation("junit", "junit", "4.12")
     testImplementation("com.nhaarman.mockitokotlin2", "mockito-kotlin", "2.1.0")
@@ -38,4 +38,14 @@ tasks.getByName<JacocoReport>("jacocoTestReport") {
 
         csv.isEnabled = false
     }
+}
+
+tasks.withType<Jar> {
+    manifest {
+        attributes(mapOf("Main-Class" to application.mainClassName))
+    }
+    val version = "1.0-SNAPSHOT"
+
+    archiveName = "${application.applicationName}-$version.jar"
+    from(configurations.compile.map { if (it.isDirectory) it else zipTree(it) })
 }

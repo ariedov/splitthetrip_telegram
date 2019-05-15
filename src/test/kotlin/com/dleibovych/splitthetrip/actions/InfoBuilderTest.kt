@@ -41,6 +41,6 @@ class InfoBuilderTest {
         val message = createTelegramMessage(1, chat = createTelegramChat(1))
         action.perform(messenger, createTelegramUpdate(1, message = message))
 
-        verify(messenger).sendMessage(1, text = "user2 має повернути user1 - *300 usd*\r\nuser3 має повернути user1 - *300 usd*")
+        verify(messenger).sendMessage(1, text = "user2 має повернути user1 - *300 usd*\nuser3 має повернути user1 - *300 usd*")
     }
 }

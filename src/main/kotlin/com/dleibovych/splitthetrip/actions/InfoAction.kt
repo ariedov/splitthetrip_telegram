@@ -29,7 +29,7 @@ class InfoAction(private val storage: Storage) : Action {
                 builder.append(debt.currency.name)
                 builder.append("*")
             })
-            builder.appendln()
+            builder.append("\n")
         }.toString().trim()
 
         messenger.sendMessage(update.message!!.chat.id, text = result)
