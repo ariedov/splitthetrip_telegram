@@ -59,9 +59,15 @@ class AddExpenseActionTest {
         action.perform(messenger, update)
 
         verify(messenger).sendMessage(
-            1, text = "Підтвердити платіж 145.15 default?", replyMarkup = InlineKeyboardButton(
-                text = "Підтвердити!",
-                callbackData = "/confirmadd 1 145.15 default"
+            1, text = "Підтвердити платіж 145.15 default?", replyMarkup = InlineKeyboardMarkup(
+                listOf(
+                    listOf(
+                        InlineKeyboardButton(
+                            text = "Підтвердити!",
+                            callbackData = "/confirmadd 1 145.15 default"
+                        )
+                    )
+                )
             )
         )
     }
@@ -72,7 +78,8 @@ class AddExpenseActionTest {
         whenever(storage.getCurrencies()).thenReturn(listOf(Currency("default")))
 
         val user = createTelegramUser(1, isBot = false, firstName = "name")
-        val message = createTelegramMessage(1, chat = createTelegramChat(1), text = "/add 1 145.15 default", from = user)
+        val message =
+            createTelegramMessage(1, chat = createTelegramChat(1), text = "/add 1 145.15 default", from = user)
         val update = createTelegramUpdate(1, message = message)
 
         action.perform(messenger, update)

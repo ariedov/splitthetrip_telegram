@@ -8,6 +8,7 @@ import com.dleibovych.splitthetrip.createTelegramUpdate
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import me.ivmg.telegram.entities.InlineKeyboardButton
+import me.ivmg.telegram.entities.InlineKeyboardMarkup
 import org.junit.Before
 import org.junit.Test
 
@@ -44,9 +45,15 @@ class AddCurrencyActionTest {
         initiateAction.perform(messenger, update)
 
         verify(messenger).sendMessage(
-            1, "Додати нову валюту *usd*?", replyMarkup = InlineKeyboardButton(
-                text = "Так",
-                callbackData = "/confirmcurrency usd"
+            1, "Додати нову валюту *usd*?", replyMarkup = InlineKeyboardMarkup(
+                listOf(
+                    listOf(
+                        InlineKeyboardButton(
+                            text = "Так",
+                            callbackData = "/confirmcurrency usd"
+                        )
+                    )
+                )
             )
         )
     }

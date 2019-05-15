@@ -8,6 +8,7 @@ import com.dleibovych.splitthetrip.createTelegramUpdate
 import com.dleibovych.splitthetrip.createTelegramUser
 import com.nhaarman.mockitokotlin2.*
 import me.ivmg.telegram.entities.InlineKeyboardButton
+import me.ivmg.telegram.entities.InlineKeyboardMarkup
 import org.junit.Before
 import org.junit.Test
 
@@ -48,9 +49,15 @@ class RegisterActionTest {
             chatId = 1,
             text = "name готовий платити за 4.",
             replyMarkup =
-                InlineKeyboardButton(
-                    "Підтвердити!",
-                    callbackData = "/confirmregister 1 4"
+            InlineKeyboardMarkup(
+                listOf(
+                    listOf(
+                        InlineKeyboardButton(
+                            "Підтвердити!",
+                            callbackData = "/confirmregister 1 4"
+                        )
+                    )
+                )
             )
         )
     }
