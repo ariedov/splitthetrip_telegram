@@ -150,3 +150,13 @@ fun createTelegramUser(
 ): User {
     return User(id, isBot, firstName, lastName, username, languageCode)
 }
+
+fun createCallbackQuery(
+    id: String,
+    user: User,
+    data: String,
+    message: Message? = null,
+    inlineMessageId: String? = null
+): CallbackQuery {
+    return CallbackQuery(id, user, message, inlineMessageId, data)
+}
