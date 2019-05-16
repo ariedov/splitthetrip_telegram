@@ -87,4 +87,16 @@ class ExtensionTest {
         val result = 15.001.convertToMoneyLong()
         assertEquals(1500, result)
     }
+
+    @Test
+    fun testFindFirstAction() {
+        val result = "/action action".findAction()
+        assertEquals("/action", result)
+    }
+
+    @Test
+    fun testFindNoAction() {
+        val result = "action".findAction()
+        assertNull(result)
+    }
 }

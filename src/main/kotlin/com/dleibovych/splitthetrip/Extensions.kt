@@ -40,3 +40,8 @@ fun String.findLastNonActionText(): String? {
 fun Double.convertToMoneyLong(): Long {
     return String.format("%.2f", this).replace(".", "").toLong()
 }
+
+fun String.findAction(): String? {
+    val actionRegex = "(/\\w+)".toRegex()
+    return actionRegex.find(this)?.groupValues?.first()
+}
