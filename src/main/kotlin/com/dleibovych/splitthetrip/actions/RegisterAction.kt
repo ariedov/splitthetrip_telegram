@@ -5,6 +5,7 @@ import com.dleibovych.splitthetrip.data.Storage
 import com.dleibovych.splitthetrip.findFirstLong
 import com.dleibovych.splitthetrip.findSecondLong
 import me.ivmg.telegram.entities.InlineKeyboardButton
+import me.ivmg.telegram.entities.InlineKeyboardMarkup
 import me.ivmg.telegram.entities.Update
 import me.ivmg.telegram.entities.User
 
@@ -17,9 +18,15 @@ class RegisterAction : Action {
         messenger.sendMessage(
             chatId = update.message?.chat?.id ?: 0,
             text = formatRegisterMessage(user, responsibleFor),
-            replyMarkup = if (user != null) InlineKeyboardButton(
-                "Підтвердити!",
-                callbackData = "/confirmregister ${user.id} $responsibleFor"
+            replyMarkup = if (user != null) InlineKeyboardMarkup(
+                listOf(
+                    listOf(
+                        InlineKeyboardButton(
+                            "Підтвердити!",
+                            callbackData = "/confirmregister ${user.id} $responsibleFor"
+                        )
+                    )
+                )
             ) else null
         )
     }

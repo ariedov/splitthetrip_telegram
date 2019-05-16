@@ -151,9 +151,15 @@ class AddExpenseAction(private val storage: Storage) : Action {
         user: BotUser
     ) {
         messenger.sendMessage(
-            chatId, text = "Підтвердити платіж $value ${currency.name}?", replyMarkup = InlineKeyboardButton(
-                text = "Підтвердити!",
-                callbackData = "/confirmadd ${user.id} $value ${currency.name}"
+            chatId, text = "Підтвердити платіж $value ${currency.name}?", replyMarkup = InlineKeyboardMarkup(
+                listOf(
+                    listOf(
+                        InlineKeyboardButton(
+                            text = "Підтвердити!",
+                            callbackData = "/confirmadd ${user.id} $value ${currency.name}"
+                        )
+                    )
+                )
             )
         )
     }
