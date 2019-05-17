@@ -74,7 +74,7 @@ class ConfirmRegisterAction(private val storage: Storage) : Action {
 
         messenger.sendMessage(
             chatId = chatId,
-            text = "Успішно зберегли ${update.message?.from?.firstName} як платника!"
+            text = "Успішно зберегли ${update.from!!.firstName} як платника!"
         )
     }
 }
