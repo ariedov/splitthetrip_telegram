@@ -1,24 +1,21 @@
 package com.dleibovych.splitthetrip.actions.expense
 
+import com.dleibovych.splitthetrip.*
 import com.dleibovych.splitthetrip.actions.Action
 import com.dleibovych.splitthetrip.actions.TelegramMessenger
-import com.dleibovych.splitthetrip.convertToMoneyLong
 import com.dleibovych.splitthetrip.data.Expense
 import com.dleibovych.splitthetrip.data.Storage
-import com.dleibovych.splitthetrip.findFirstLong
-import com.dleibovych.splitthetrip.findLastNonActionText
-import com.dleibovych.splitthetrip.findSecondDouble
 import me.ivmg.telegram.entities.Update
 
 class ConfirmExpenseAction(private val storage: Storage) : Action {
 
     override fun perform(messenger: TelegramMessenger, update: Update) {
-        val messageText = update.message!!.text!!
-        val chatId = update.message!!.chat.id
+        val messageText = update.text!!
+        val chatId = update.chatId!!
 
         val inlineId =  messageText.findFirstLong()
 
-        if (inlineId != update.message!!.from!!.id) {
+        if (inlineId != update.from?.id) {
             messenger.sendMessage(chatId, "Підтвердити операцію має той хто її почав.")
             return
         }
@@ -26,7 +23,7 @@ class ConfirmExpenseAction(private val storage: Storage) : Action {
         val savedUsers = storage.readUsers()
         val currentUser = savedUsers.find { it.id == inlineId }
         if (currentUser == null) {
-            messenger.sendMessage(chatId, text = "${update.message!!.from!!.firstName} не зареєстровано як платника. Ви можете зареєструватись як платник виконавши /register")
+            messenger.sendMessage(chatId, text = "${update.from!!.firstName} не зареєстровано як платника. Ви можете зареєструватись як платник виконавши /register")
             return
         }
 

@@ -2,6 +2,7 @@ package com.dleibovych.splitthetrip.actions
 
 import com.dleibovych.splitthetrip.calculator.calculateDebt
 import com.dleibovych.splitthetrip.calculator.calculateShare
+import com.dleibovych.splitthetrip.chatId
 import com.dleibovych.splitthetrip.data.Storage
 import me.ivmg.telegram.entities.Update
 import java.lang.StringBuilder
@@ -16,9 +17,9 @@ class InfoAction(private val storage: Storage) : Action {
 
         val shares = calculateShare(users, currencies, expenses, transfers)
 
-        val result = users.fold(StringBuilder()) { builder, user ->
+        val result = users.fold(StringBuilder()) { rootBuilder, user ->
             val debts = calculateDebt(user, currencies, shares)
-            debts.fold(builder, { builder, debt ->
+            debts.fold(rootBuilder, { builder, debt ->
                 builder.append(user.name)
                 builder.append(" має повернути ")
                 builder.append(debt.toUser.name)
@@ -29,9 +30,9 @@ class InfoAction(private val storage: Storage) : Action {
                 builder.append(debt.currency.name)
                 builder.append("*")
             })
-            builder.append("\n")
+            rootBuilder.append("\n")
         }.toString().trim()
 
-        messenger.sendMessage(update.message!!.chat.id, text = result)
+        messenger.sendMessage(update.chatId!!, text = result)
     }
 }

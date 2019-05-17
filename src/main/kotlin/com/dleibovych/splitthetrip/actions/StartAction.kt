@@ -1,7 +1,7 @@
 package com.dleibovych.splitthetrip.actions
 
+import com.dleibovych.splitthetrip.chatId
 import com.dleibovych.splitthetrip.data.Storage
-import me.ivmg.telegram.Bot
 import me.ivmg.telegram.entities.Update
 
 class StartAction(private val storage: Storage) : Action {
@@ -10,7 +10,7 @@ class StartAction(private val storage: Storage) : Action {
         storage.clear()
 
         messenger.sendMessage(
-            chatId = update.message!!.chat.id,
+            chatId = update.chatId!!,
             text = formatInitialMessage())
     }
 

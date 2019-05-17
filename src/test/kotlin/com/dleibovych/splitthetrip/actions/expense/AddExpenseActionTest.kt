@@ -85,9 +85,15 @@ class AddExpenseActionTest {
         action.perform(messenger, update)
 
         verify(messenger).sendMessage(
-            1, text = "Підтвердити платіж 145.15 default?", replyMarkup = InlineKeyboardButton(
-                text = "Підтвердити!",
-                callbackData = "/confirmadd 1 145.15 default"
+            1, text = "Підтвердити платіж 145.15 default?", replyMarkup = InlineKeyboardMarkup(
+                listOf(
+                    listOf(
+                        InlineKeyboardButton(
+                            text = "Підтвердити!",
+                            callbackData = "/confirmadd 1 145.15 default"
+                        )
+                    )
+                )
             )
         )
     }
@@ -122,9 +128,15 @@ class AddExpenseActionTest {
         action.perform(messenger, update)
 
         verify(messenger).sendMessage(
-            1, text = "Підтвердити платіж 145.15 default?", replyMarkup = InlineKeyboardButton(
-                text = "Підтвердити!",
-                callbackData = "/confirmadd 1 145.15 default"
+            1, text = "Підтвердити платіж 145.15 default?", replyMarkup = InlineKeyboardMarkup(
+                listOf(
+                    listOf(
+                        InlineKeyboardButton(
+                            text = "Підтвердити!",
+                            callbackData = "/confirmadd 1 145.15 default"
+                        )
+                    )
+                )
             )
         )
     }

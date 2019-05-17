@@ -1,8 +1,10 @@
 package com.dleibovych.splitthetrip.actions
 
+import com.dleibovych.splitthetrip.chatId
 import com.dleibovych.splitthetrip.data.Currency
 import com.dleibovych.splitthetrip.data.Storage
 import com.dleibovych.splitthetrip.findLastNonActionText
+import com.dleibovych.splitthetrip.text
 import me.ivmg.telegram.entities.InlineKeyboardButton
 import me.ivmg.telegram.entities.InlineKeyboardMarkup
 import me.ivmg.telegram.entities.Update
@@ -10,10 +12,10 @@ import me.ivmg.telegram.entities.Update
 class AddCurrencyAction : Action {
 
     override fun perform(messenger: TelegramMessenger, update: Update) {
-        val message = update.message!!.text
+        val message = update.text
         val currencyName = message?.findLastNonActionText()
 
-        val chatId = update.message!!.chat.id
+        val chatId = update.chatId!!
         if (currencyName == null) {
             sendPromptCurrencyMessage(messenger, chatId)
             return
@@ -43,10 +45,10 @@ class AddCurrencyAction : Action {
 class ConfirmNewCurrencyAction(private val storage: Storage) : Action {
 
     override fun perform(messenger: TelegramMessenger, update: Update) {
-        val message = update.message!!.text
+        val message = update.text
         val currencyName = message?.findLastNonActionText()
 
-        val chatId = update.message!!.chat.id
+        val chatId = update.chatId!!
         if (currencyName == null) {
             sendPromptCurrencyMessage(messenger, chatId)
             return

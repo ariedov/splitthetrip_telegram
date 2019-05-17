@@ -1,11 +1,8 @@
 package com.dleibovych.splitthetrip.actions
 
-import com.dleibovych.splitthetrip.chatId
+import com.dleibovych.splitthetrip.*
 import com.dleibovych.splitthetrip.data.BotUser
 import com.dleibovych.splitthetrip.data.Storage
-import com.dleibovych.splitthetrip.findFirstLong
-import com.dleibovych.splitthetrip.findSecondLong
-import com.dleibovych.splitthetrip.text
 import me.ivmg.telegram.entities.InlineKeyboardButton
 import me.ivmg.telegram.entities.InlineKeyboardMarkup
 import me.ivmg.telegram.entities.Update
@@ -14,11 +11,11 @@ import me.ivmg.telegram.entities.User
 class RegisterAction : Action {
 
     override fun perform(messenger: TelegramMessenger, update: Update) {
-        val user = update.message?.from
+        val user = update.from
         val responsibleFor = (update.text ?: "").findFirstLong() ?: 1
 
         messenger.sendMessage(
-            chatId = update.message?.chat?.id ?: 0,
+            chatId = update.chatId!!,
             text = formatRegisterMessage(user, responsibleFor),
             replyMarkup = if (user != null) InlineKeyboardMarkup(
                 listOf(
@@ -49,11 +46,11 @@ class RegisterAction : Action {
 class ConfirmRegisterAction(private val storage: Storage) : Action {
 
     override fun perform(messenger: TelegramMessenger, update: Update) {
-        val userId = update.message?.text?.findFirstLong()
-        val responsibleFor = update.message?.text?.findSecondLong()
+        val userId = update.text!!.findFirstLong()
+        val responsibleFor = update.text!!.findSecondLong()
 
         val chatId = update.chatId!!
-        if (userId == null || responsibleFor == null || userId != update.message?.from?.id) {
+        if (userId == null || responsibleFor == null || userId != update.from?.id) {
             messenger.sendMessage(
                 chatId = chatId,
                 text = "Не вдалося зберегти платника."
@@ -64,7 +61,7 @@ class ConfirmRegisterAction(private val storage: Storage) : Action {
 
         val newUser = BotUser(
             id = userId,
-            name = update.message?.from?.firstName ?: "",
+            name = update.from!!.firstName,
             responsibleFor = responsibleFor
         )
         val storedUsers = storage.readUsers()
