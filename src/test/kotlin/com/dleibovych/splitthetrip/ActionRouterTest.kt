@@ -3,17 +3,21 @@ package com.dleibovych.splitthetrip
 import com.dleibovych.splitthetrip.actions.*
 import com.dleibovych.splitthetrip.actions.expense.AddExpenseAction
 import com.dleibovych.splitthetrip.actions.expense.ConfirmExpenseAction
+import com.dleibovych.splitthetrip.data.Storage
+import com.nhaarman.mockitokotlin2.mock
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
 class ActionRouterTest {
 
+    private lateinit var storage: Storage
     private lateinit var router: ActionRouter
 
     @Before
     fun setUp() {
-        router = ActionRouter()
+        storage = mock()
+        router = ActionRouter(storage)
     }
 
     @Test
@@ -126,5 +130,15 @@ class ActionRouterTest {
         val result = router.createAction(update)
 
         assertTrue(result is ConfirmTransactionAction)
+    }
+
+    @Test
+    fun testDefaultAction() {
+        val message = createTelegramMessage(1, chat = createTelegramChat(1), text = "")
+        val update = createTelegramUpdate(1, message)
+
+        val result = router.createAction(update)
+
+        assertTrue(result is ErrorAction)
     }
 }
