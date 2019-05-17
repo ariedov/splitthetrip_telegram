@@ -1,7 +1,5 @@
 package com.dleibovych.splitthetrip
 
-import java.text.DecimalFormat
-
 val numberRegex = "(\\d+)".toRegex()
 
 fun String.findFirstLong(): Long? {

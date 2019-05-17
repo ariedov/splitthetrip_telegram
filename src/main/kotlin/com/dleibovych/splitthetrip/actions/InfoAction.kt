@@ -52,7 +52,7 @@ class InfoAction(private val storage: Storage) : Action {
                 builder.append(debt.toUser.name)
                 builder.append(" - ")
                 builder.append("*")
-                builder.append(debt.debt)
+                builder.append(debt.debt.toMoneyString())
                 builder.append(" ")
                 builder.append(debt.currency.name)
                 builder.append("*")
@@ -75,10 +75,14 @@ class InfoAction(private val storage: Storage) : Action {
                 .fold(builder) { _, expense ->
                     builder.append(expense.user.name)
                     builder.append(" витратив ")
-                    builder.append("*${expense.amount} ${expense.currency.name}*")
+                    builder.append("*${expense.amount.toMoneyString()} ${expense.currency.name}*")
                 }
             builder.append("\n")
         }.toString().trim()
         messenger.sendMessage(update.chatId!!, text = message)
     }
+}
+
+private fun Long.toMoneyString(): String {
+    return String.format("%.2f", this / 100.00)
 }
