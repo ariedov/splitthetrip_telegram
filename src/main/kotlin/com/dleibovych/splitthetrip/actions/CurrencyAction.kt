@@ -64,7 +64,7 @@ class ConfirmNewCurrencyAction(private val storage: Storage) : Action {
         storage.addCurrency(newCurrency)
         messenger.sendMessage(
             chatId = chatId,
-            text = "Успіщно збережено валюту $currencyName"
+            text = "Успішно збережено валюту $currencyName"
         )
     }
 

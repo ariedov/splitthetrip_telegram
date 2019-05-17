@@ -33,7 +33,7 @@ class ConfirmCurrencyActionTest {
         action.perform(messenger, update)
 
         verify(storage).addCurrency(Currency("usd"))
-        verify(messenger).sendMessage(1, "Успіщно збережено валюту usd", replyMarkup = null)
+        verify(messenger).sendMessage(1, "Успішно збережено валюту usd", replyMarkup = null)
     }
 
     @Test
