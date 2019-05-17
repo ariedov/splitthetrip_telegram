@@ -80,6 +80,46 @@ class ConfirmExpenseActionTest {
     }
 
     @Test
+    fun testMultipleDigitsAfterComma() {
+        val user = BotUser(1, "name", 4)
+        whenever(storage.getCurrencies()).thenReturn(listOf(Currency("usd")))
+        whenever(storage.readUsers()).thenReturn(listOf(user))
+
+        val message = createTelegramMessage(
+            1,
+            text = "/confirmadd 1 15.7123 usd",
+            chat = createTelegramChat(1),
+            from = createTelegramUser(1, isBot = false, firstName = "name")
+        )
+        val update = createTelegramUpdate(1, message = message)
+
+        action.perform(messenger, update)
+
+        verify(storage).addExpense(Expense(user, 1571, Currency("usd")))
+        verify(messenger).sendMessage(1, text = "Операцію збережено")
+    }
+
+    @Test
+    fun testOneDigitAfterComma() {
+        val user = BotUser(1, "name", 4)
+        whenever(storage.getCurrencies()).thenReturn(listOf(Currency("usd")))
+        whenever(storage.readUsers()).thenReturn(listOf(user))
+
+        val message = createTelegramMessage(
+            1,
+            text = "/confirmadd 1 15.7 usd",
+            chat = createTelegramChat(1),
+            from = createTelegramUser(1, isBot = false, firstName = "name")
+        )
+        val update = createTelegramUpdate(1, message = message)
+
+        action.perform(messenger, update)
+
+        verify(storage).addExpense(Expense(user, 1570, Currency("usd")))
+        verify(messenger).sendMessage(1, text = "Операцію збережено")
+    }
+
+    @Test
     fun testSuccessfullySaveDecimalExpense() {
         val user = BotUser(1, "name", 4)
         whenever(storage.getCurrencies()).thenReturn(listOf(Currency("usd")))
