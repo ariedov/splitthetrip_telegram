@@ -1,9 +1,11 @@
 package com.dleibovych.splitthetrip.actions
 
+import com.dleibovych.splitthetrip.chatId
 import com.dleibovych.splitthetrip.data.BotUser
 import com.dleibovych.splitthetrip.data.Storage
 import com.dleibovych.splitthetrip.findFirstLong
 import com.dleibovych.splitthetrip.findSecondLong
+import com.dleibovych.splitthetrip.text
 import me.ivmg.telegram.entities.InlineKeyboardButton
 import me.ivmg.telegram.entities.InlineKeyboardMarkup
 import me.ivmg.telegram.entities.Update
@@ -13,7 +15,7 @@ class RegisterAction : Action {
 
     override fun perform(messenger: TelegramMessenger, update: Update) {
         val user = update.message?.from
-        val responsibleFor = (update.message?.text ?: "").findFirstLong() ?: 1
+        val responsibleFor = (update.text ?: "").findFirstLong() ?: 1
 
         messenger.sendMessage(
             chatId = update.message?.chat?.id ?: 0,
@@ -50,7 +52,7 @@ class ConfirmRegisterAction(private val storage: Storage) : Action {
         val userId = update.message?.text?.findFirstLong()
         val responsibleFor = update.message?.text?.findSecondLong()
 
-        val chatId = update.message!!.chat.id
+        val chatId = update.chatId!!
         if (userId == null || responsibleFor == null || userId != update.message?.from?.id) {
             messenger.sendMessage(
                 chatId = chatId,

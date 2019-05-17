@@ -1,13 +1,14 @@
 package com.dleibovych.splitthetrip
 
 import com.dleibovych.splitthetrip.actions.*
-import com.dleibovych.splitthetrip.actions.expense.AddExpenseAction
-import com.dleibovych.splitthetrip.actions.expense.ConfirmExpenseAction
 import com.dleibovych.splitthetrip.data.Storage
+import me.ivmg.telegram.HandleUpdate
 import me.ivmg.telegram.bot
 import me.ivmg.telegram.dispatch
-import me.ivmg.telegram.dispatcher.command
+import me.ivmg.telegram.dispatcher.Dispatcher
+import me.ivmg.telegram.dispatcher.handlers.Handler
 import me.ivmg.telegram.dispatcher.text
+import me.ivmg.telegram.entities.Update
 import org.litote.kmongo.KMongo
 
 fun main() {
@@ -16,33 +17,31 @@ fun main() {
     val database = client.getDatabase("splitthetrip")
 
     val storage = Storage(database)
+    val actionRouter = ActionRouter(storage)
 
     val bot = bot {
         token = System.getenv("TELEGRAM_BOT_TOKEN") ?: ""
         dispatch {
             var messenger: TelegramMessenger? = null
-            text { bot, _ -> messenger = messenger ?: TelegramMessenger(bot) }
+            all { bot, update ->
+                messenger = messenger ?: TelegramMessenger(bot)
 
-            command("start") { _, update -> StartAction(storage).perform(messenger!!, update) }
-
-            command("register") { _, update -> RegisterAction().perform(messenger!!, update) }
-
-            command("confirmregister") { _, update -> ConfirmRegisterAction(storage).perform(messenger!!, update) }
-
-            command("addcurrency") { _, update -> AddCurrencyAction().perform(messenger!!, update) }
-
-            command("confirmcurrency") { _, update -> ConfirmNewCurrencyAction(storage).perform(messenger!!, update) }
-
-            command("add") { _, update -> AddExpenseAction(storage).perform(messenger!!, update) }
-
-            command("confirmadd") { _, update -> ConfirmExpenseAction(storage).perform(messenger!!, update) }
-
-            command("info") { _, update -> InfoAction(storage).perform(messenger!!, update) }
-
-            command("transfer") { bot, update ->
-
+                val action = actionRouter.createAction(update)
+                action.perform(messenger!!, update)
             }
         }
     }
     bot.startPolling()
+}
+
+fun Dispatcher.all(text: String? = null, body: HandleUpdate) {
+    addHandler(AllHandler(text, body))
+}
+
+class AllHandler(private val text: String? = null, handler: HandleUpdate): Handler(handler) {
+
+    override val groupIdentifier: String = "All Handler"
+
+    override fun checkUpdate(update: Update): Boolean = true
+
 }
