@@ -132,4 +132,19 @@ class InfoBuilderTest {
             text = "Немає жодної зареєстрованої валюти. Ви можете добавити одну через /addcurrency _назва_"
         )
     }
+
+    @Test
+    fun testDecimals() {
+        val user1 = BotUser(1, "user1", 1)
+
+        whenever(storage.readUsers()).thenReturn(listOf(user1))
+        whenever(storage.getCurrencies()).thenReturn(listOf(Currency("usd")))
+        whenever(storage.getExpenses()).thenReturn(listOf(Expense(user1, 1570, Currency("usd"))))
+        whenever(storage.getTransfers()).thenReturn(emptyList())
+
+        val message = createTelegramMessage(1, chat = createTelegramChat(1))
+        action.perform(messenger, createTelegramUpdate(1, message = message))
+
+        verify(messenger).sendMessage(1, text = "user1 витратив *15.7 usd*")
+    }
 }
