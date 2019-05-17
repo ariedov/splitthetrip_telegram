@@ -56,6 +56,14 @@ class ExtensionTest {
     }
 
     @Test
+    fun testFindSecondDoubleComma() {
+        val secondDouble = "1 11,4".findSecondDouble()
+
+        assertEquals(11.4, secondDouble)
+    }
+
+
+    @Test
     fun testNoFirstDouble() {
         val firstDouble = "only text".findFirstDouble()
 

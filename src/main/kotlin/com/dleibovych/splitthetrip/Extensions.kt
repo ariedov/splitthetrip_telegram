@@ -21,10 +21,10 @@ fun String.findFirstDouble(): Double? {
 }
 
 fun String.findSecondDouble(): Double? {
-    val doubleRegex = "(\\d+\\.*\\d*)".toRegex()
+    val doubleRegex = "(\\d+[.|,]*\\d*)".toRegex()
     val allMatches = doubleRegex.findAll(this).toList()
     return if (allMatches.size > 1) {
-        allMatches[1].groupValues[0].toDouble()
+        allMatches[1].groupValues[0].replace(",", ".").toDouble()
     } else {
         null
     }
