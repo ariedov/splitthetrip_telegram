@@ -1,14 +1,11 @@
 package com.dleibovych.splitthetrip.actions.expense
 
+import com.dleibovych.splitthetrip.*
 import com.dleibovych.splitthetrip.actions.Action
 import com.dleibovych.splitthetrip.actions.TelegramMessenger
 import com.dleibovych.splitthetrip.data.BotUser
 import com.dleibovych.splitthetrip.data.Currency
 import com.dleibovych.splitthetrip.data.Storage
-import com.dleibovych.splitthetrip.findFirstDouble
-import com.dleibovych.splitthetrip.findFirstLong
-import com.dleibovych.splitthetrip.findLastNonActionText
-import com.dleibovych.splitthetrip.findSecondDouble
 import me.ivmg.telegram.entities.InlineKeyboardButton
 import me.ivmg.telegram.entities.InlineKeyboardMarkup
 import me.ivmg.telegram.entities.Update
@@ -16,8 +13,8 @@ import me.ivmg.telegram.entities.Update
 class AddExpenseAction(private val storage: Storage) : Action {
 
     override fun perform(messenger: TelegramMessenger, update: Update) {
-        val user = update.message!!.from!!
-        val chatId = update.message!!.chat.id
+        val user = update.from!!
+        val chatId = update.chatId!!
 
         val registeredUsers = storage.readUsers()
         val botUser = registeredUsers.find { it.id == user.id }
@@ -35,7 +32,7 @@ class AddExpenseAction(private val storage: Storage) : Action {
             return
         }
 
-        val messageText = update.message!!.text!!
+        val messageText = update.text!!
         val chunksCount = chunksCount(messageText) - 1 // the action itself
         val numbersCount = getNumbersCount(messageText)
 
@@ -71,7 +68,7 @@ class AddExpenseAction(private val storage: Storage) : Action {
         currencies: List<Currency>,
         chatId: Long
     ) {
-        val value = update.message!!.text?.findFirstDouble()
+        val value = update.text?.findFirstDouble()
 
         if (currencies.size == 1) {
             sendConfirmationMessage(messenger, chatId, value, currencies[0], user)
@@ -88,8 +85,8 @@ class AddExpenseAction(private val storage: Storage) : Action {
         currencies: List<Currency>,
         chatId: Long
     ) {
-        val inlineId = update.message!!.text?.findFirstLong()
-        val value = update.message!!.text?.findSecondDouble()
+        val inlineId = update.text?.findFirstLong()
+        val value = update.text?.findSecondDouble()
 
         if (inlineId != user.id) {
             messenger.sendMessage(chatId, text = "Підтвердити операцію має той самий користувач який її починав.")
@@ -106,8 +103,8 @@ class AddExpenseAction(private val storage: Storage) : Action {
         currencies: List<Currency>,
         chatId: Long
     ) {
-        val value = update.message!!.text?.findFirstDouble()
-        val currencyName = update.message!!.text?.findLastNonActionText()!!
+        val value = update.text?.findFirstDouble()
+        val currencyName = update.text?.findLastNonActionText()!!
 
         val currency = Currency(currencyName)
         if (!currencies.contains(currency)) {
@@ -125,9 +122,9 @@ class AddExpenseAction(private val storage: Storage) : Action {
         currencies: List<Currency>,
         chatId: Long
     ) {
-        val inlineId = update.message!!.text?.findFirstLong()
-        val value = update.message!!.text?.findSecondDouble()
-        val currencyName = update.message!!.text?.findLastNonActionText()!!
+        val inlineId = update.text?.findFirstLong()
+        val value = update.text?.findSecondDouble()
+        val currencyName = update.text?.findLastNonActionText()!!
 
         if (inlineId != user.id) {
             messenger.sendMessage(chatId, text = "Підтвердити операцію має той самий користувач який її починав.")
