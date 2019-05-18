@@ -18,7 +18,7 @@ class ActionRouter(private val storage: Storage) {
         "/confirmcurrency" -> ConfirmNewCurrencyAction(storage)
         "/add" -> AddExpenseAction(storage)
         "/confirmadd" -> ConfirmExpenseAction(storage)
-        "/transfer" -> TransactionAction()
+        "/transfer" -> TransactionAction(storage)
         "/confirmtransfer" -> ConfirmTransactionAction()
         "/info" -> InfoAction(storage)
         else -> ErrorAction()
