@@ -33,8 +33,8 @@ class AddExpenseAction(private val storage: Storage) : Action {
         }
 
         val messageText = update.text!!
-        val chunksCount = chunksCount(messageText) - 1 // the action itself
-        val numbersCount = getNumbersCount(messageText)
+        val chunksCount = messageText.chunksCount() - 1 // the action itself
+        val numbersCount = messageText.getNumbersCount()
 
         when (chunksCount) {
             1 -> processValueOnly(messenger, update, botUser, currencies, chatId)
@@ -46,15 +46,6 @@ class AddExpenseAction(private val storage: Storage) : Action {
             3 -> processUserIdValueAndCurrency(messenger, update, botUser, currencies, chatId)
             else -> showPrompt(messenger, chatId)
         }
-    }
-
-    private fun chunksCount(text: String): Int {
-        return text.split(" ").size
-    }
-
-    private fun getNumbersCount(text: String): Int {
-        val chunks = text.split(" ")
-        return chunks.sumBy { if (it.toDoubleOrNull() == null) 0 else 1 }
     }
 
     private fun showPrompt(messenger: TelegramMessenger, chatId: Long) {

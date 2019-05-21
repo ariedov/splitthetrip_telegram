@@ -43,3 +43,13 @@ fun String.findAction(): String? {
     val actionRegex = "(/\\w+)".toRegex()
     return actionRegex.find(this)?.groupValues?.first()
 }
+
+fun String.chunksCount(): Int {
+    return split(" ").size
+}
+
+fun String.getNumbersCount(): Int {
+    val chunks = split(" ")
+    return chunks.sumBy { if (it.findFirstDouble() == null) 0 else 1 }
+}
+

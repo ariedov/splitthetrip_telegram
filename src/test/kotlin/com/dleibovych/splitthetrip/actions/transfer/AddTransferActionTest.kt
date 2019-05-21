@@ -46,7 +46,9 @@ class AddTransferActionTest {
 
     @Test
     fun testNothingProvided() {
-        val message = createTelegramMessage(1, text = "/transfer", chat = createTelegramChat(1))
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "first", 1)))
+
+        val message = createTelegramMessage(1, text = "/transfer", chat = createTelegramChat(1), from = createTelegramUser(1, false, "first"))
         val update = createTelegramUpdate(1, message = message)
 
         action.perform(messenger, update)
@@ -56,7 +58,10 @@ class AddTransferActionTest {
 
     @Test
     fun testNoValueProvided() {
-        val message = createTelegramMessage(1, text = "/transfer usd", chat = createTelegramChat(1))
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "first", 1)))
+
+
+        val message = createTelegramMessage(1, text = "/transfer usd", chat = createTelegramChat(1), from = createTelegramUser(1, false, "first"))
         val update = createTelegramUpdate(1, message = message)
 
         action.perform(messenger, update)
