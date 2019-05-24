@@ -93,6 +93,7 @@ class AddTransferActionTest {
 
     @Test
     fun testValueProvidedMultipleCurrency() {
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "first", 1), BotUser(2, "second", 1)))
         whenever(storage.getCurrencies()).thenReturn(listOf(Currency("usd"), Currency("uah")))
 
         val user = createTelegramUser(1, false, "first")
@@ -110,7 +111,7 @@ class AddTransferActionTest {
                         InlineKeyboardButton("usd", callbackData = "/confirmtransfer 1 0 16.01 usd")
                     ),
                     listOf(
-                        InlineKeyboardButton("usd", callbackData = "/confirmtransfer 1 0 16.01 uah")
+                        InlineKeyboardButton("uah", callbackData = "/confirmtransfer 1 0 16.01 uah")
                     )
                 )
             )
