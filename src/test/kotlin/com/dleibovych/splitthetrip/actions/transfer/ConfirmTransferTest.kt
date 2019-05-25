@@ -5,6 +5,11 @@ import org.junit.Test
 class ConfirmTransferTest {
 
     @Test
+    fun testConfirmIdDifferentFromId() {
+        TODO("implement")
+    }
+
+    @Test
     fun testInvalidFromUser() {
         TODO("implement")
     }
@@ -18,5 +23,4 @@ class ConfirmTransferTest {
     fun testSuccessfullySavedTransfer() {
         TODO("implement")
     }
-
 }

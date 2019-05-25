@@ -84,7 +84,7 @@ class AddTransferActionTest {
             1, "Оберіть людину якій ви переводите кошти.", replyMarkup = InlineKeyboardMarkup(
                 listOf(
                     listOf(
-                        InlineKeyboardButton("second", callbackData = "/confirmtransfer 1 2 16.01 usd")
+                        InlineKeyboardButton("second", callbackData = "/transfer 1 2 16.01 usd")
                     )
                 )
             )
@@ -108,10 +108,10 @@ class AddTransferActionTest {
             replyMarkup = InlineKeyboardMarkup(
                 listOf(
                     listOf(
-                        InlineKeyboardButton("usd", callbackData = "/confirmtransfer 1 0 16.01 usd")
+                        InlineKeyboardButton("usd", callbackData = "/transfer 1 0 16.01 usd")
                     ),
                     listOf(
-                        InlineKeyboardButton("uah", callbackData = "/confirmtransfer 1 0 16.01 uah")
+                        InlineKeyboardButton("uah", callbackData = "/transfer 1 0 16.01 uah")
                     )
                 )
             )

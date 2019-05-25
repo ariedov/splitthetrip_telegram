@@ -35,7 +35,7 @@ class TransactionAction(private val storage: Storage) : Action {
                                 listOf(
                                     InlineKeyboardButton(
                                         it.name,
-                                        callbackData = "/confirmtransfer ${user.id} ${it.id} $value ${currencies[0].name}"
+                                        callbackData = "/transfer ${user.id} ${it.id} $value ${currencies[0].name}"
                                     )
                                 )
                             })
@@ -50,7 +50,7 @@ class TransactionAction(private val storage: Storage) : Action {
                                 listOf(
                                     InlineKeyboardButton(
                                         it.name,
-                                        callbackData = "/confirmtransfer ${user.id} 0 $value ${it.name}"
+                                        callbackData = "/transfer ${user.id} 0 $value ${it.name}"
                                     )
                                 )
                             })
