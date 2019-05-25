@@ -17,6 +17,6 @@ data class Transfer(
     val from: BotUser,
     val to: BotUser,
     val amount: Long,
-    val currency: Currency,
-    val date: Date = Date.from(Instant.now())
+    val currency: Currency
+//    val date: Date = Date.from(Instant.now())
 )

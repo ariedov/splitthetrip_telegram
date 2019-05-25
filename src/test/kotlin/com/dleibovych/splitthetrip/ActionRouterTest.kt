@@ -3,6 +3,8 @@ package com.dleibovych.splitthetrip
 import com.dleibovych.splitthetrip.actions.*
 import com.dleibovych.splitthetrip.actions.expense.AddExpenseAction
 import com.dleibovych.splitthetrip.actions.expense.ConfirmExpenseAction
+import com.dleibovych.splitthetrip.actions.transfer.ConfirmTransactionAction
+import com.dleibovych.splitthetrip.actions.transfer.TransactionAction
 import com.dleibovych.splitthetrip.data.Storage
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Assert.assertTrue

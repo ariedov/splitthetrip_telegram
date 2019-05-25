@@ -1,7 +1,6 @@
 package com.dleibovych.splitthetrip.actions.transfer
 
 import com.dleibovych.splitthetrip.actions.TelegramMessenger
-import com.dleibovych.splitthetrip.actions.TransactionAction
 import com.dleibovych.splitthetrip.actions.TransactionChecker
 import com.dleibovych.splitthetrip.createTelegramChat
 import com.dleibovych.splitthetrip.createTelegramMessage

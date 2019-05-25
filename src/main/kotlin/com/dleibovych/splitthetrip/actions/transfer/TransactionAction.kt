@@ -1,6 +1,7 @@
-package com.dleibovych.splitthetrip.actions
+package com.dleibovych.splitthetrip.actions.transfer
 
 import com.dleibovych.splitthetrip.*
+import com.dleibovych.splitthetrip.actions.*
 import com.dleibovych.splitthetrip.data.BotUser
 import com.dleibovych.splitthetrip.data.Currency
 import com.dleibovych.splitthetrip.data.Storage
@@ -144,12 +145,5 @@ class TransactionAction(
                         )
                     })
         )
-    }
-}
-
-class ConfirmTransactionAction : Action {
-
-    override fun perform(messenger: TelegramMessenger, update: Update) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
