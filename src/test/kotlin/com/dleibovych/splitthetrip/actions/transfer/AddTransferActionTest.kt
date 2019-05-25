@@ -149,4 +149,58 @@ class AddTransferActionTest {
             )))
         )
     }
+
+    @Test
+    fun testFullTransactionInvalidCurrency() {
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "first", 1), BotUser(2, "second", 1)))
+        whenever(storage.getCurrencies()).thenReturn(listOf(Currency("uah")))
+
+        val user = createTelegramUser(1, false, "first")
+        val message =
+            createTelegramMessage(1, text = "/transfer 1 2 16.01 usd", chat = createTelegramChat(1), from = user)
+        val update = createTelegramUpdate(1, message = message)
+
+        action.perform(messenger, update)
+
+        verify(messenger).sendMessage(
+            1,
+            "Валюти usd не знайдено"
+        )
+    }
+
+    @Test
+    fun testValueTransactionInvalidCurrency() {
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "first", 1), BotUser(2, "second", 1)))
+        whenever(storage.getCurrencies()).thenReturn(listOf(Currency("uah")))
+
+        val user = createTelegramUser(1, false, "first")
+        val message =
+            createTelegramMessage(1, text = "/transfer 16.01 usd", chat = createTelegramChat(1), from = user)
+        val update = createTelegramUpdate(1, message = message)
+
+        action.perform(messenger, update)
+
+        verify(messenger).sendMessage(
+            1,
+            "Валюти usd не знайдено"
+        )
+    }
+
+    @Test
+    fun testFromValueTransactionInvalidCurrency() {
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "first", 1), BotUser(2, "second", 1)))
+        whenever(storage.getCurrencies()).thenReturn(listOf(Currency("uah")))
+
+        val user = createTelegramUser(1, false, "first")
+        val message =
+            createTelegramMessage(1, text = "/transfer 1 16.01 usd", chat = createTelegramChat(1), from = user)
+        val update = createTelegramUpdate(1, message = message)
+
+        action.perform(messenger, update)
+
+        verify(messenger).sendMessage(
+            1,
+            "Валюти usd не знайдено"
+        )
+    }
 }
