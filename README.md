@@ -1,4 +1,5 @@
-// TODO: travis/codecov badges
+[![Build Status](https://travis-ci.org/ariedov/splitthetrip_telegram.svg?branch=master)](https://travis-ci.org/ariedov/splitthetrip_telegram)
+[![codecov](https://codecov.io/gh/ariedov/splitthetrip_telegram/branch/master/graph/badge.svg)](https://codecov.io/gh/ariedov/splitthetrip_telegram)
 
 Telegram bot for tracking expenses in a family trip.
 
