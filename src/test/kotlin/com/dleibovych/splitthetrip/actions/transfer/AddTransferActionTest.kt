@@ -2,6 +2,7 @@ package com.dleibovych.splitthetrip.actions.transfer
 
 import com.dleibovych.splitthetrip.actions.TelegramMessenger
 import com.dleibovych.splitthetrip.actions.TransactionAction
+import com.dleibovych.splitthetrip.actions.TransactionChecker
 import com.dleibovych.splitthetrip.createTelegramChat
 import com.dleibovych.splitthetrip.createTelegramMessage
 import com.dleibovych.splitthetrip.createTelegramUpdate
@@ -27,7 +28,7 @@ class AddTransferActionTest {
     fun setUp() {
         messenger = mock()
         storage = mock()
-        action = TransactionAction(storage)
+        action = TransactionAction(storage, TransactionChecker())
     }
 
     @Test
@@ -48,7 +49,12 @@ class AddTransferActionTest {
     fun testNothingProvided() {
         whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "first", 1)))
 
-        val message = createTelegramMessage(1, text = "/transfer", chat = createTelegramChat(1), from = createTelegramUser(1, false, "first"))
+        val message = createTelegramMessage(
+            1,
+            text = "/transfer",
+            chat = createTelegramChat(1),
+            from = createTelegramUser(1, false, "first")
+        )
         val update = createTelegramUpdate(1, message = message)
 
         action.perform(messenger, update)
@@ -61,7 +67,12 @@ class AddTransferActionTest {
         whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "first", 1)))
 
 
-        val message = createTelegramMessage(1, text = "/transfer usd", chat = createTelegramChat(1), from = createTelegramUser(1, false, "first"))
+        val message = createTelegramMessage(
+            1,
+            text = "/transfer usd",
+            chat = createTelegramChat(1),
+            from = createTelegramUser(1, false, "first")
+        )
         val update = createTelegramUpdate(1, message = message)
 
         action.perform(messenger, update)
@@ -108,13 +119,34 @@ class AddTransferActionTest {
             replyMarkup = InlineKeyboardMarkup(
                 listOf(
                     listOf(
-                        InlineKeyboardButton("usd", callbackData = "/transfer 1 0 16.01 usd")
+                        InlineKeyboardButton("usd", callbackData = "/transfer 1 16.01 usd")
                     ),
                     listOf(
-                        InlineKeyboardButton("uah", callbackData = "/transfer 1 0 16.01 uah")
+                        InlineKeyboardButton("uah", callbackData = "/transfer 1 16.01 uah")
                     )
                 )
             )
+        )
+    }
+
+    @Test
+    fun testFromToValueCurrency() {
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "first", 1), BotUser(2, "second", 1)))
+        whenever(storage.getCurrencies()).thenReturn(listOf(Currency("usd"), Currency("uah")))
+
+        val user = createTelegramUser(1, false, "first")
+        val message =
+            createTelegramMessage(1, text = "/transfer 1 2 16.01 usd", chat = createTelegramChat(1), from = user)
+        val update = createTelegramUpdate(1, message = message)
+
+        action.perform(messenger, update)
+
+        verify(messenger).sendMessage(
+            1,
+            "Підтвердити переказ: від first до second - 16.01 usd",
+            replyMarkup = InlineKeyboardMarkup(listOf(listOf(
+                InlineKeyboardButton("Підтвердити!", callbackData = "/confirmtransfer 1 2 16.01 usd")
+            )))
         )
     }
 }
