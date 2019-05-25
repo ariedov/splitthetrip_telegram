@@ -95,6 +95,41 @@ class ConfirmTransferTest {
     }
 
     @Test
+    fun testNoTo() {
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "first", 1), BotUser(2, "second", 1)))
+        whenever(storage.getCurrencies()).thenReturn(listOf(Currency("usd")))
+
+        val user = createTelegramUser(1, false, "name")
+        val message = createTelegramMessage(1, chat = createTelegramChat(10))
+        val update = createTelegramUpdate(
+            1,
+            callbackQuery = createCallbackQuery("1", user, data = "/confirmtransfer 1 15.02 usd", message = message)
+        )
+
+        action.perform(messenger, update)
+
+        verify(messenger).sendMessage(10, "Сталася помилка, недостатньо інформації.")
+    }
+
+    @Test
+    fun testNoUsers() {
+        whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "first", 1), BotUser(2, "second", 1)))
+        whenever(storage.getCurrencies()).thenReturn(listOf(Currency("usd")))
+
+        val user = createTelegramUser(1, false, "name")
+        val message = createTelegramMessage(1, chat = createTelegramChat(10))
+        val update = createTelegramUpdate(
+            1,
+            callbackQuery = createCallbackQuery("1", user, data = "/confirmtransfer 15.02 usd", message = message)
+        )
+
+        action.perform(messenger, update)
+
+        verify(messenger).sendMessage(10, "Сталася помилка, недостатньо інформації.")
+    }
+
+
+    @Test
     fun testSuccessfullySavedTransfer() {
         whenever(storage.getCurrencies()).thenReturn(listOf(Currency("usd")))
         whenever(storage.readUsers()).thenReturn(listOf(BotUser(1, "first", 1), BotUser(2, "second", 1)))
