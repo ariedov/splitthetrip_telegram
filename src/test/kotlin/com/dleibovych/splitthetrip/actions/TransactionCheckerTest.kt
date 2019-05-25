@@ -1,12 +1,7 @@
 package com.dleibovych.splitthetrip.actions
 
-import com.dleibovych.splitthetrip.actions.ErrorTransactionInfo
-import com.dleibovych.splitthetrip.actions.TransactionChecker
-import com.dleibovych.splitthetrip.actions.ValueCurrencyTransactionInfo
-import com.dleibovych.splitthetrip.actions.ValueTransactionInfo
 import com.dleibovych.splitthetrip.data.Currency
-import junit.framework.Assert.assertEquals
-import junit.framework.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
@@ -35,7 +30,7 @@ class TransactionCheckerTest {
         val result = transactionChecker.parseTransaction(transaction)
 
         assertTrue(result is ValueTransactionInfo)
-        assertEquals(15.01, (result as ValueTransactionInfo).value)
+        assertEquals(15.01, (result as ValueTransactionInfo).value, 0.0)
     }
 
     @Test
@@ -45,7 +40,7 @@ class TransactionCheckerTest {
         val result = transactionChecker.parseTransaction(transaction)
 
         assertTrue(result is ValueCurrencyTransactionInfo)
-        assertEquals(13.0, (result as ValueCurrencyTransactionInfo).value)
+        assertEquals(13.0, (result as ValueCurrencyTransactionInfo).value, 0.0)
         assertEquals(Currency("usd"), result.currency)
     }
 
@@ -57,7 +52,7 @@ class TransactionCheckerTest {
 
         assertTrue(result is FromValueCurrencyTransactionInfo)
         assertEquals(1, (result as FromValueCurrencyTransactionInfo).fromId)
-        assertEquals(12.06, (result).value)
+        assertEquals(12.06, (result).value, 0.0)
         assertEquals(Currency("usd"), result.currency)
     }
 
@@ -70,7 +65,7 @@ class TransactionCheckerTest {
         assertTrue(result is FromToValueCurrencyTransactionInfo)
         assertEquals(1, (result as FromToValueCurrencyTransactionInfo).fromId)
         assertEquals(2, (result).toId)
-        assertEquals(12.06, (result).value)
+        assertEquals(12.06, (result).value, 0.0)
         assertEquals(Currency("usd"), result.currency)
     }
 }
